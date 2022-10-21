@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3183763517886599083}
   - component: {fileID: 3183763517886599082}
   - component: {fileID: 3183763517886599081}
+  - component: {fileID: 6125518060963667028}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -26,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3183763517886599080}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 305, y: 440, z: -2.1161}
-  m_LocalScale: {x: 144.44, y: 11.88284, z: 149.54791}
-  m_ConstrainProportionsScale: 1
+  m_LocalRotation: {x: 0, y: 0.042442393, z: 0, w: 0.99909896}
+  m_LocalPosition: {x: -25.64, y: 10.96, z: -386.02}
+  m_LocalScale: {x: 13, y: 0.5, z: 20}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 4.865, z: 0}
 --- !u!33 &3183763517886599083
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -95,5 +96,18 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.0293281, y: 9.015146, z: 0.9944835}
+  m_Center: {x: -0.06816288, y: 4.007573, z: 0.06186528}
+--- !u!114 &6125518060963667028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3183763517886599080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883ed40e40312f247bd3e283d51b4181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardHeight: 0
