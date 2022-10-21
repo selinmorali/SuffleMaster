@@ -6,9 +6,6 @@ TagManager:
   tags:
   - LeftHand
   - RightHand
-  - LeftHandCard
-  - RightHandCard
-  - Hands
   layers:
   - Default
   - TransparentFX

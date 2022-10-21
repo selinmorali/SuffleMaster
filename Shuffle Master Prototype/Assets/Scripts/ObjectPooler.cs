@@ -1,60 +1,73 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> PoolDictionary;
-    public static ObjectPooler Instance;
-
-    [System.Serializable]
+    [Serializable]
     public class Pool
     {
-        public string Tag;
+        public string PoolName;
         public GameObject Prefab;
         public int Size;
     }
 
+    public List<Pool> pools;
+    public Dictionary<string, Queue<GameObject>> PoolDictionary;
+    public static ObjectPooler Instance;
+    [SerializeField] private GameObject leftQueue;
+    [SerializeField] private GameObject rightQueue;
+
+
     private void Awake()
     {
         Instance = this;
+        CreateObjectPools();
     }
- 
-    private void Start()
+
+    void CreateObjectPools()
     {
         PoolDictionary = new Dictionary<string, Queue<GameObject>>();
 
-        foreach (Pool pool in pools)
+        Queue<GameObject> leftObjectQueue = new Queue<GameObject>();
+        Queue<GameObject> rightObjectQueue = new Queue<GameObject>();
+
+        for (int i = 0; i < pools[0].Size; i++)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-
-            for(int i = 0; i < pool.Size; i++)
-            {
-                GameObject obj = Instantiate(pool.Prefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
-            }
-
-            PoolDictionary.Add(pool.Tag, objectPool);
+            GameObject obj = Instantiate(pools[0].Prefab);
+            obj.SetActive(false);
+            obj.transform.parent = leftQueue.transform;
+            leftObjectQueue.Enqueue(obj);
         }
+        PoolDictionary.Add(pools[0].PoolName, leftObjectQueue);
+
+        for (int i = 0; i < pools[1].Size; i++)
+        {
+            GameObject obj = Instantiate(pools[1].Prefab);
+            obj.SetActive(false);
+            obj.transform.parent = rightQueue.transform;
+            rightObjectQueue.Enqueue(obj);
+        }
+        PoolDictionary.Add(pools[1].PoolName, rightObjectQueue);
+
     }
 
-    public GameObject GetCardFromPool (string tag, Vector3 position, Stack<GameObject> currentHand)
+    public GameObject GetCardToHandFromPool (string poolName, Vector3 position, Stack<GameObject> currentHand)
     {
-        if(!PoolDictionary.ContainsKey(tag))
+        if(!PoolDictionary.ContainsKey(poolName))
         {
-            Debug.LogWarning(tag + " isimli bir pool bulunmamaktadýr.");
+            Debug.LogWarning(poolName + " isimli bir pool bulunmamaktadýr.");
             return null;
         }
 
-        GameObject cardToGet = PoolDictionary[tag].Dequeue();
+        GameObject cardToGet = PoolDictionary[poolName].Dequeue();
 
         currentHand.Push(cardToGet);
         cardToGet.SetActive(true);
         cardToGet.transform.position = position;
 
-        PoolDictionary[tag].Enqueue(cardToGet);
+        PoolDictionary[poolName].Enqueue(cardToGet);
 
         return cardToGet;
     }
