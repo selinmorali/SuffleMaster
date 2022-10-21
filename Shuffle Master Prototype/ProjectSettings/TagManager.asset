@@ -8,6 +8,7 @@ TagManager:
   - RightHand
   - LeftHandCard
   - RightHandCard
+  - Hands
   layers:
   - Default
   - TransparentFX
