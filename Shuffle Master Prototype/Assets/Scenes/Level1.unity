@@ -782,10 +782,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - PoolName: leftObjectPool
+  - PoolName: Left
     Prefab: {fileID: 3183763517886599080, guid: bd3aec314d7e2a647814f349ec03690c, type: 3}
     Size: 50
-  - PoolName: rightObjectPool
+  - PoolName: Right
     Prefab: {fileID: 3183763517886599080, guid: bd3aec314d7e2a647814f349ec03690c, type: 3}
     Size: 50
   leftQueue: {fileID: 976497471}
@@ -804,50 +804,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1804287753
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1804287755}
-  - component: {fileID: 1804287754}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1804287754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804287753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b2c4a98bac7994d8c888f75b465c4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1804287755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804287753}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.459304, y: 13.824227, z: 981.16534}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2104028005
 GameObject:
@@ -932,6 +888,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 243997114}
     m_Modifications:
+    - target: {fileID: 1426118877368052776, guid: a2fa88e7119ac434aa26f6f0a9c7f659, type: 3}
+      propertyPath: side
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4787071917864255603, guid: a2fa88e7119ac434aa26f6f0a9c7f659, type: 3}
       propertyPath: m_RootOrder
       value: 1

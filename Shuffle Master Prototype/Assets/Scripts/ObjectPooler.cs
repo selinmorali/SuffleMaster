@@ -53,7 +53,7 @@ public class ObjectPooler : MonoBehaviour
 
     }
 
-    public GameObject GetCardToHandFromPool (string poolName, Vector3 position, Stack<GameObject> currentHand)
+    public GameObject GetCardFromPool (string poolName)
     {
         if(!PoolDictionary.ContainsKey(poolName))
         {
@@ -62,10 +62,6 @@ public class ObjectPooler : MonoBehaviour
         }
 
         GameObject cardToGet = PoolDictionary[poolName].Dequeue();
-
-        currentHand.Push(cardToGet);
-        cardToGet.SetActive(true);
-        cardToGet.transform.position = position;
 
         PoolDictionary[poolName].Enqueue(cardToGet);
 
