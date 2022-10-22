@@ -36,10 +36,12 @@ public class ObjectPooler : MonoBehaviour
         for (int i = 0; i < pools[0].Size; i++)
         {
             GameObject obj = Instantiate(pools[0].Prefab);
+            obj.name = pools[0].PoolName + " Hand Card";
             obj.SetActive(false);
             obj.transform.parent = leftQueue.transform;
             leftObjectQueue.Enqueue(obj);
         }
+
         PoolDictionary.Add(pools[0].PoolName, leftObjectQueue);
 
         for (int i = 0; i < pools[1].Size; i++)
@@ -50,7 +52,6 @@ public class ObjectPooler : MonoBehaviour
             rightObjectQueue.Enqueue(obj);
         }
         PoolDictionary.Add(pools[1].PoolName, rightObjectQueue);
-
     }
 
     public GameObject GetCardFromPool (string poolName)
