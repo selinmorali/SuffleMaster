@@ -26,5 +26,5 @@ public class TouchController : MonoBehaviour
             _deltaPosition = _currentTouchPosition.x - _startTouchPosition.x;
             _speedCoef = (int)Mathf.Abs(_deltaPosition / 100);
         }
-    } 
+    }
 }

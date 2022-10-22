@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StackController : MonoBehaviour
@@ -9,54 +9,85 @@ public class StackController : MonoBehaviour
     private GameObject _topDeckCard;
     private Vector3 _topDeckCardPosition;
     private Vector3 placeToCardPosition;
-    public Stack<GameObject> currentStack;
-    public HandSO handSO;
+    private Stack<GameObject> currentStack;
     private bool isStarted = false;
+    private int currentCardCount;
+    private int lastCardCount;
+    public enum Side
+    {
+        Left,
+        Right
+    }
+
+    public Side side;
 
     private void Start()
     {
+        currentStack = new Stack<GameObject>();
         _cardHeight = Card.Instance.CardHeight;
-        currentStack = handSO.CurrentStack;
-        StartCoroutine(nameof(CheckCardsOnStack));
+        StartCoroutine(nameof(GetPositionForNewCard));
+        currentCardCount = currentStack.Count;
+        lastCardCount = currentStack.Count;
     }
     private void Update()
     {
         if (!isStarted)
         {
-            if (handSO.side == HandSO.Side.Left)
+            if (side == Side.Left)
             {
-                StackTenCards();
+                GetCardAndPlace(10, Side.Left.ToString());
                 isStarted = true;
             }
         }
     }
-
-    private void StackTenCards()
+    private GameObject GetCardFromPool(string side)
     {
+        GameObject card = ObjectPooler.Instance.GetCardFromPool(side);
 
-        for (int i = 0; i < 10; i++)
+        return card;
+    }
+
+    private void PlaceCardToDeck(GameObject card)
+    {
+        card.SetActive(true);
+        card.transform.position = GetPositionForNewCard();
+        currentStack.Push(card);
+    }
+
+    private void GetCardAndPlace(int count, string side)
+    {
+        for (int i = 0; i < count; i++)
         {
-            ObjectPooler.Instance.GetCardToHandFromPool("leftObjectPool", placeToCardPosition, currentStack);
+            GameObject temporaryCard = GetCardFromPool(side);
+            PlaceCardToDeck(temporaryCard);
         }
     }
 
-    IEnumerator CheckCardsOnStack()
+    private void RemoveCardFromDeck(int count)
     {
-        while (true)
+        for (int i = 0; i < count; i++)
         {
-            if (currentStack.Count != 0)
-            {
-                _topDeckCard = currentStack.Peek();
-                _topDeckCardPosition = _topDeckCard.transform.position;
-                _placeToCardHeightPosition = _topDeckCardPosition.y + _cardHeight;
-                placeToCardPosition = new Vector3(_topDeckCard.transform.position.x, _placeToCardHeightPosition, _topDeckCard.transform.position.z);
+            GameObject cardToRemove = currentStack.Pop();
+            cardToRemove.SetActive(false);
+        }
+    }
 
-            }
-            else
-            {
-                placeToCardPosition = gameObject.transform.GetChild(3).transform.position;
-            }
-            yield return new WaitForEndOfFrame();
+    private Vector3 GetPositionForNewCard()
+    {
+        if (currentStack.Count > 0)
+        {
+            _topDeckCard = currentStack.Peek();
+            _topDeckCardPosition = _topDeckCard.transform.position;
+            _placeToCardHeightPosition = _topDeckCardPosition.y + _cardHeight;
+            placeToCardPosition = new Vector3(_topDeckCard.transform.position.x, _placeToCardHeightPosition, _topDeckCard.transform.position.z);
+
+            return placeToCardPosition;
+        }
+        else
+        {
+            placeToCardPosition = gameObject.transform.GetChild(3).transform.position;
+
+            return placeToCardPosition;
         }
     }
 }
