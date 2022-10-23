@@ -6,6 +6,7 @@ TagManager:
   tags:
   - LeftHand
   - RightHand
+  - Gate
   layers:
   - Default
   - TransparentFX
