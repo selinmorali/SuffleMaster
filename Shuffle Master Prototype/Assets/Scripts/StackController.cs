@@ -18,7 +18,6 @@ public class StackController : MonoBehaviour
 
     private void Start()
     {
-
         currentStack = handSO.CurrentHand;
         _cardHeight = Card.Instance.CardHeight;
         StartCoroutine(nameof(GetPositionForNewCard));
@@ -32,7 +31,7 @@ public class StackController : MonoBehaviour
         {
             if (handSO.side == HandSO.Side.Left)
             {
-                GetCardAndPlace(70);
+                GetCardAndPlace(10);
                 isStarted = true;
             }
         }
@@ -93,6 +92,27 @@ public class StackController : MonoBehaviour
             placeToCardPosition = gameObject.transform.GetChild(3).transform.position;
 
             return placeToCardPosition;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Gate") && currentStack.Count > 0)
+        {
+            if (other.GetComponent<Card>()._operator == "+")
+            {
+                GetCardAndPlace(other.GetComponent<Card>().value);
+            }
+            else if (other.GetComponent<Card>()._operator == "-")
+            {
+                RemoveCardFromDeck(other.GetComponent<Card>().value);
+            }
+            else if (other.GetComponent<Card>()._operator == "*")
+            {
+                int result = currentStack.Count * (other.GetComponent<Card>().value - 1);
+
+                GetCardAndPlace(result);
+            }
         }
     }
 }
