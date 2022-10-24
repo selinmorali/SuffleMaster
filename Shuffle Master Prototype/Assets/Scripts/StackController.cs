@@ -31,7 +31,7 @@ public class StackController : MonoBehaviour
         {
             if (handSO.side == HandSO.Side.Left)
             {
-                GetCardAndPlace(10);
+                GetCardAndPlace(50);
                 isStarted = true;
             }
         }
@@ -44,7 +44,7 @@ public class StackController : MonoBehaviour
         return card;
     }
 
-    private void PlaceCardToDeck(GameObject card)
+    public void PlaceCardToDeck(GameObject card)
     {
         card.SetActive(true);
         card.transform.position = GetPositionForNewCard();
@@ -53,14 +53,10 @@ public class StackController : MonoBehaviour
 
     public void GetCardAndPlace(int count)
     {
-
         for (int i = 0; i < count; i++)
         {
-            if (currentStack.Count < 100)
-            {
-                GameObject temporaryCard = GetCardFromPool(handSO.side.ToString());
-                PlaceCardToDeck(temporaryCard);
-            }
+            GameObject temporaryCard = GetCardFromPool(handSO.side.ToString());
+            PlaceCardToDeck(temporaryCard);
         }
     }
 
