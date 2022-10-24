@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class TouchController : MonoBehaviour
 {
-    private float _lastTouchPosition, _currentTouchPosition;
-    private float _deltaPosition;
+    private float _startTouchPositionX, _previousTouchPositionX, _currentTouchPositionX;
+    private float _deltaPositionX;
+    private float _moveDistance;
+    private float _oldDeltaPositionX;
     private float _speedCoef;
     [SerializeField] private GameObject leftHand, rightHand;
+
     private void Start()
     {
         StartCoroutine(isTouched());
@@ -21,32 +24,61 @@ public class TouchController : MonoBehaviour
             {
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    _lastTouchPosition = Input.GetTouch(0).position.x;
+                    //Ekrana ilk dokundugum pozisyonun X degerini alir.
+                    _startTouchPositionX = Input.GetTouch(0).position.x;
                 }
-                if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                else if (Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
-                    _currentTouchPosition = Input.GetTouch(0).position.x;
-                    //if(Input.GetTouch(0).deltaPosition.x )
-                    //_deltaPosition = _currentTouchPosition.x - _startTouchPosition.x;
-                    _deltaPosition = 5 * (Input.GetTouch(0).position.x - _lastTouchPosition) / Screen.width;
-                    if (_currentTouchPosition > _lastTouchPosition)
+                    //Parmagin ekranda dokundugu pozisyonun X degerini anlik olarak gunceller.
+                    _currentTouchPositionX = Input.GetTouch(0).position.x;
+
+                    //Anlik olarak pozisyon degisikligini takip eder. Saga gidildiginde +, sola gidildiginde - deger tutar.
+                    _deltaPositionX = _currentTouchPositionX - _previousTouchPositionX;
+
+                    //hizli bir sekilde parmak kaydirildiginda deltaPositionX degerini dogru guncellemek icin ufak bir cooldown.
+                    yield return new WaitForSeconds(0.0005f);
+                    CheckDirectionChange();
+
+                    //Parmagi kaydirmaya devam ettigim surece bir ya da birkac frame onceki dokunma pozisyonu.
+                    _previousTouchPositionX = _currentTouchPositionX;
+                     _moveDistance = _currentTouchPositionX - _startTouchPositionX;
+
+                    if (_moveDistance > 0 && leftHand.GetComponent<StackController>().currentStack.Count > 0)
                     {
-                        Debug.Log("Yön Deðiþti.");
-                    }
-                    _lastTouchPosition = Input.GetTouch(0).position.x;
-                    //_deltaPosition = Input.GetTouch(0).deltaPosition.x;
-                    // _speedCoef = Mathf.Abs(_deltaPosition / 100);
-                    if (_deltaPosition > 0 && leftHand.GetComponent<StackController>().currentStack.Count > 0)
-                    {
-                        yield return new WaitForSeconds(0.03f);
+                        //Kart aktarim hizi icin cooldown
+                        yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
                         SwapToRight();
                     }
-                    else if (_deltaPosition < 0 && rightHand.GetComponent<StackController>().currentStack.Count > 0)
+                    else if (_moveDistance < 0 && rightHand.GetComponent<StackController>().currentStack.Count > 0)
                     {
-                        yield return new WaitForSeconds(0.03f);
+                        //Kart aktarim hizi icin cooldown
+                        yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
                         SwapToLeft();
                     }
                 }
+                else if(Input.GetTouch(0).phase == TouchPhase.Stationary)
+                {
+                    //10 degeri deadzone olarak belirlenmistir. Kaydirma islemi basladiktan sonra parmak basili kalirsa
+                    //kart aktarim islemine devam etmek icin.
+                    if (_moveDistance > 10 && leftHand.GetComponent<StackController>().currentStack.Count > 0)
+                    {
+                        yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
+                        SwapToRight();
+                    }
+                    else if (_moveDistance < -10 && rightHand.GetComponent<StackController>().currentStack.Count > 0)
+                    {
+                        yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
+                        SwapToLeft();
+                    }
+                }
+            }
+            else
+            {
+                //Parmak kaldirildiginda, ekranda bir dokunma durumu olmadiginda pozisyon degerlerini sifirlar.
+                _startTouchPositionX = 0;
+                _currentTouchPositionX = 0;
+                _previousTouchPositionX = 0;
+                _moveDistance = 0;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -68,6 +100,62 @@ public class TouchController : MonoBehaviour
             rightHand.GetComponent<StackController>().RemoveCardFromDeck(1);
             leftHand.GetComponent<StackController>().GetCardAndPlace(1);
         }
+    }
+
+    private void CheckDirectionChange()
+    {
+        //Bir onceki pozisyon degisikligi ile mevcut pozisyon degisikligi arasinda yon farkinin oldugunu
+        //anlamak icin (cunku saga gidiyorsa + sola gidiliyorsa - deger aldigini biliyoruz) bu degerleri carpiyoruz.
+        if (_deltaPositionX * _oldDeltaPositionX < 0)
+        {
+            _startTouchPositionX = _currentTouchPositionX;
+        }
+
+        //Yon degigisikligini algilamak adina bir onceki frame'deki pozisyon farkliligini hafizada tutar.
+        _oldDeltaPositionX = _deltaPositionX;
+    }
+
+    private float CalculateSpeedCoef(float distance)
+    {
+        if(distance > 0)
+        {
+            if(distance <= 150)
+            {
+                _speedCoef = 0.04f;
+            }
+            else if(distance > 150 && distance <= 300)
+            {
+                _speedCoef = 0.03f;
+            }
+            else if(distance > 300 && distance <= 450)
+            {
+                _speedCoef = 0.02f;
+            }
+            else if(distance > 450 && distance <= 600)
+            {
+                _speedCoef = 0.01f;
+            }
+        }
+        else if(distance < 0)
+        {
+            if (distance >= -150)
+            {
+                _speedCoef = 0.04f;
+            }
+            else if (distance < -150 && distance >= -300)
+            {
+                _speedCoef = 0.03f;
+            }
+            else if (distance < -300 && distance >= -450)
+            {
+                _speedCoef = 0.02f;
+            }
+            else if (distance < -450 && distance >= -600)
+            {
+                _speedCoef = 0.01f;
+            }
+        }
+        return _speedCoef;
     }
 
 }
