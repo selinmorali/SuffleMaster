@@ -8,63 +8,38 @@ public class ObjectPooler : MonoBehaviour
     [Serializable]
     public class Pool
     {
-        public string PoolName;
         public GameObject Prefab;
         public int Size;
     }
+    Queue<GameObject> objectQueue;
 
-    public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> PoolDictionary;
+    public Pool objectPool;
     public static ObjectPooler Instance;
-    [SerializeField] private GameObject leftQueue;
-    [SerializeField] private GameObject rightQueue;
-
 
     private void Awake()
     {
         Instance = this;
-        CreateObjectPools();
+        CreateObjectPool();
     }
 
-    void CreateObjectPools()
+    void CreateObjectPool()
     {
-        PoolDictionary = new Dictionary<string, Queue<GameObject>>();
+        objectQueue = new Queue<GameObject>();
 
-        Queue<GameObject> leftObjectQueue = new Queue<GameObject>();
-        Queue<GameObject> rightObjectQueue = new Queue<GameObject>();
-
-        for (int i = 0; i < pools[0].Size; i++)
+        for (int i = 0; i < objectPool.Size; i++)
         {
-            GameObject obj = Instantiate(pools[0].Prefab);
-            obj.name = pools[0].PoolName + " Hand Card";
+            GameObject obj = Instantiate(objectPool.Prefab);
+            obj.transform.parent = gameObject.transform;
             obj.SetActive(false);
-            obj.transform.parent = leftQueue.transform;
-            leftObjectQueue.Enqueue(obj);
+            objectQueue.Enqueue(obj);
         }
-
-        PoolDictionary.Add(pools[0].PoolName, leftObjectQueue);
-
-        for (int i = 0; i < pools[1].Size; i++)
-        {
-            GameObject obj = Instantiate(pools[1].Prefab);
-            obj.SetActive(false);
-            obj.transform.parent = rightQueue.transform;
-            rightObjectQueue.Enqueue(obj);
-        }
-        PoolDictionary.Add(pools[1].PoolName, rightObjectQueue);
     }
 
-    public GameObject GetCardFromPool (string poolName)
+    public GameObject GetCard ()
     {
-        if(!PoolDictionary.ContainsKey(poolName))
-        {
-            Debug.LogWarning(poolName + " isimli bir pool bulunmamaktadýr.");
-            return null;
-        }
+        GameObject cardToGet = objectQueue.Dequeue();
 
-        GameObject cardToGet = PoolDictionary[poolName].Dequeue();
-
-        PoolDictionary[poolName].Enqueue(cardToGet);
+        objectQueue.Enqueue(cardToGet);
 
         return cardToGet;
     }

@@ -11,18 +11,14 @@ public class StackController : MonoBehaviour
     private Vector3 placeToCardPosition;
     public Stack<GameObject> currentStack;
     private bool isStarted = false;
-    private int currentCardCount;
-    private int lastCardCount;
     [SerializeField] private HandSO handSO;
-    [SerializeField]
+    [SerializeField] private GameObject _queue;
+    [SerializeField] private GameObject mainPool;
 
     private void Start()
     {
         currentStack = handSO.CurrentHand;
         _cardHeight = Card.Instance.CardHeight;
-        StartCoroutine(nameof(GetPositionForNewCard));
-        currentCardCount = currentStack.Count;
-        lastCardCount = currentStack.Count;
     }
 
     private void Update()
@@ -31,15 +27,15 @@ public class StackController : MonoBehaviour
         {
             if (handSO.side == HandSO.Side.Left)
             {
-                GetCardAndPlace(50);
+                GetCardAndPlace(10);
                 isStarted = true;
             }
         }
     }
 
-    private GameObject GetCardFromPool(string handSide)
+    private GameObject GetCardFromPool()
     {
-        GameObject card = ObjectPooler.Instance.GetCardFromPool(handSide);
+        GameObject card = ObjectPooler.Instance.GetCard();
 
         return card;
     }
@@ -47,6 +43,7 @@ public class StackController : MonoBehaviour
     public void PlaceCardToDeck(GameObject card)
     {
         card.SetActive(true);
+        card.transform.parent = _queue.transform;
         card.transform.position = GetPositionForNewCard();
         currentStack.Push(card);
     }
@@ -55,7 +52,7 @@ public class StackController : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject temporaryCard = GetCardFromPool(handSO.side.ToString());
+            GameObject temporaryCard = GetCardFromPool();
             PlaceCardToDeck(temporaryCard);
         }
     }
@@ -67,6 +64,7 @@ public class StackController : MonoBehaviour
             if (currentStack.Count > 0)
             {
                 GameObject cardToRemove = currentStack.Pop();
+                cardToRemove.transform.parent = mainPool.transform;
                 cardToRemove.SetActive(false);
             }
         }
@@ -95,17 +93,17 @@ public class StackController : MonoBehaviour
     {
         if (other.CompareTag("Gate") && currentStack.Count > 0)
         {
-            if (other.GetComponent<Card>()._operator == "+")
+            if (other.GetComponent<Gate>()._operator == "+")
             {
-                GetCardAndPlace(other.GetComponent<Card>().value);
+                GetCardAndPlace(other.GetComponent<Gate>().value);
             }
-            else if (other.GetComponent<Card>()._operator == "-")
+            else if (other.GetComponent<Gate>()._operator == "-")
             {
-                RemoveCardFromDeck(other.GetComponent<Card>().value);
+                RemoveCardFromDeck(other.GetComponent<Gate> ().value);
             }
-            else if (other.GetComponent<Card>()._operator == "*")
+            else if (other.GetComponent<Gate>()._operator == "*")
             {
-                int result = currentStack.Count * (other.GetComponent<Card>().value - 1);
+                int result = currentStack.Count * (other.GetComponent<Gate>().value - 1);
 
                 GetCardAndPlace(result);
             }

@@ -24,22 +24,22 @@ public class TouchController : MonoBehaviour
             {
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    //Ekrana ilk dokundugum pozisyonun X degerini alir.
+                    //Ekrana ilk dokundugum pozisyonun X degerini alir
                     _startTouchPositionX = Input.GetTouch(0).position.x;
                 }
                 else if (Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
-                    //Parmagin ekranda dokundugu pozisyonun X degerini anlik olarak gunceller.
+                    //Parmagin ekranda dokundugu pozisyonun X degerini anlik olarak gunceller
                     _currentTouchPositionX = Input.GetTouch(0).position.x;
 
                     //Anlik olarak pozisyon degisikligini takip eder. Saga gidildiginde +, sola gidildiginde - deger tutar.
                     _deltaPositionX = _currentTouchPositionX - _previousTouchPositionX;
 
-                    //hizli bir sekilde parmak kaydirildiginda deltaPositionX degerini dogru guncellemek icin ufak bir cooldown.
+                    //hizli bir sekilde parmak kaydirildiginda deltaPositionX degerini dogru guncellemek icin ufak bir cooldown
                     yield return new WaitForSeconds(0.0005f);
                     CheckDirectionChange();
 
-                    //Parmagi kaydirmaya devam ettigim surece bir ya da birkac frame onceki dokunma pozisyonu.
+                    //Parmagi kaydirmaya devam ettigim surece bir ya da birkac frame onceki dokunma pozisyonu
                     _previousTouchPositionX = _currentTouchPositionX;
                      _moveDistance = _currentTouchPositionX - _startTouchPositionX;
 
@@ -59,7 +59,7 @@ public class TouchController : MonoBehaviour
                 else if(Input.GetTouch(0).phase == TouchPhase.Stationary)
                 {
                     //10 degeri deadzone olarak belirlenmistir. Kaydirma islemi basladiktan sonra parmak basili kalirsa
-                    //kart aktarim islemine devam etmek icin.
+                    //kart aktarim islemine devam etmek icin
                     if (_moveDistance > 10 && leftHand.GetComponent<StackController>().currentStack.Count > 0)
                     {
                         yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));

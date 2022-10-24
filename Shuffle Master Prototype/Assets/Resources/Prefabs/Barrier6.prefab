@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 1197889948009494685}
   - component: {fileID: 1197889948009494686}
   - component: {fileID: 988624312835902215}
-  - component: {fileID: 1903139554922980327}
+  - component: {fileID: 4671801348522294816}
   m_Layer: 0
   m_Name: RightGate
   m_TagString: Gate
@@ -654,7 +654,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 0.95764476, z: 9.999997}
   m_Center: {x: 0, y: 0.14667201, z: 0}
---- !u!114 &1903139554922980327
+--- !u!114 &4671801348522294816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -663,10 +663,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1197889948009494689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 883ed40e40312f247bd3e283d51b4181, type: 3}
+  m_Script: {fileID: 11500000, guid: a002b00e985086047987f2420ac5ad70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardHeight: 0
   _operator: '-'
   value: 8
 --- !u!1 &1197889948100203217
@@ -800,7 +799,7 @@ GameObject:
   - component: {fileID: 1197889948755834106}
   - component: {fileID: 1197889948755834107}
   - component: {fileID: 988624313565431655}
-  - component: {fileID: 1903139556340412294}
+  - component: {fileID: 5807748817862743185}
   m_Layer: 0
   m_Name: LeftGate
   m_TagString: Gate
@@ -887,7 +886,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 0.84199524, z: 9.999997}
   m_Center: {x: 0, y: 0.07559967, z: 0}
---- !u!114 &1903139556340412294
+--- !u!114 &5807748817862743185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -896,10 +895,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1197889948755834109}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 883ed40e40312f247bd3e283d51b4181, type: 3}
+  m_Script: {fileID: 11500000, guid: a002b00e985086047987f2420ac5ad70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardHeight: 0
   _operator: +
   value: 20
 --- !u!1 &1197889949335083386
