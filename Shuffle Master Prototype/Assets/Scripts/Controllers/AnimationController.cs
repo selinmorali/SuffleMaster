@@ -37,12 +37,12 @@ public class AnimationController : MonoBehaviour
             LeftPathValues[0] = leftHand.GetComponent<StackController>().GetLocalPositionForAnimation();
             LeftPathValues[4] = rightHand.GetComponent<StackController>().GetLocalPositionForAnimation();
             CardList.Peek().transform.localPosition = LeftPathValues[0];
-            t = CardList.Peek().transform.transform.DOLocalPath(LeftPathValues, 0.2f, PathSystem);
+            rightHand.GetComponent<StackController>().GetCardAndPlace(1);
+            t = CardList.Peek().transform.transform.DOLocalPath(LeftPathValues, 0.20f, PathSystem);
 
             t.SetEase(Ease.Linear).OnComplete(() =>
             {
                 HideCard();
-                rightHand.GetComponent<StackController>().GetCardAndPlace(1);
             });
         }
         else if(side == "ToLeft")
@@ -52,12 +52,12 @@ public class AnimationController : MonoBehaviour
             RightPathValues[0] = rightHand.GetComponent<StackController>().GetLocalPositionForAnimation();
             RightPathValues[4] = leftHand.GetComponent<StackController>().GetLocalPositionForAnimation();
             CardList.Peek().transform.localPosition = RightPathValues[0];
-            t = CardList.Peek().transform.transform.DOLocalPath(RightPathValues, 0.2f, PathSystem);
+            leftHand.GetComponent<StackController>().GetCardAndPlace(1);
+            t = CardList.Peek().transform.transform.DOLocalPath(RightPathValues, 0.20f, PathSystem);
 
             t.SetEase(Ease.Linear).OnComplete(() =>
             {
                 HideCard();
-                leftHand.GetComponent<StackController>().GetCardAndPlace(1);
             });
 
         }
