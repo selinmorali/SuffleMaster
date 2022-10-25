@@ -1,38 +1,38 @@
 # Shuffle Master Prototype
 
-## Ürün İsmi
+## ÃœrÃ¼n Ä°smi
 
 SHUFFLE MASTER!
 
-## Ürün Açıklaması
+## ÃœrÃ¼n AÃ§Ä±klamasÄ±
 
-Bu prototip, 1 haftada geliştirilmiş bir 3D runner hypercasual bir oyundur.
+Bu prototip, 1 haftada geliÅŸtirilmiÅŸ bir 3D runner hypercasual bir oyundur.
 
 
-## Ürün Özellikleri
+## ÃœrÃ¼n Ã–zellikleri
 
-### Kartların Elden Ele Aktarılabilmesi
-Kaydırma yönüne bağlı olarak kartlar bir elden diğerine taşınır.
+### KartlarÄ±n Elden Ele AktarÄ±labilmesi
+KaydÄ±rma yÃ¶nÃ¼ne baÄŸlÄ± olarak kartlar bir elden diÄŸerine taÅŸÄ±nÄ±r.
 
-![Elden Ele Aktarım](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/KartAktarimi.gif?raw=true)
+![Elden Ele AktarÄ±m](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/KartAktarimi.gif)
 
-### Sürükleme Mesafesine Bağlı Olarak Kart Aktarım Hızının Değişmesi
-Sürükleme mesafesine bağlı olarak kartlar elden elde daha hızlı veya daha yavaş aktarılır.
+### SÃ¼rÃ¼kleme Mesafesine BaÄŸlÄ± Olarak Kart AktarÄ±m HÄ±zÄ±nÄ±n DeÄŸiÅŸmesi
+SÃ¼rÃ¼kleme mesafesine baÄŸlÄ± olarak kartlar elden elde daha hÄ±zlÄ± veya daha yavaÅŸ aktarÄ±lÄ±r.
 
-![Kart Aktarım Hızı](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/SuruklemeHizi.gif?raw=true)
+![Kart AktarÄ±m HÄ±zÄ±](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/SuruklemeHizi.gif?raw=true)
 
-### Kartların Tek Elde Stack'lenebilmesi
-Bir elde toplanan kartların üst üste dizilme durumudur.
+### KartlarÄ±n Tek Elde Stack'lenebilmesi
+Bir elde toplanan kartlarÄ±n Ã¼st Ã¼ste dizilme durumudur.
 
-![Stack](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/CardStack.gif?raw=true)
+![Stack](https://github.com/selinmorali/shuffle-master-prototype/blob/main/Shuffle%20Master%20Prototype/Media/CardStack.gif?raw=true)
 
-### Gate'lerden Geçme Durumunda Matematiksel İşlemlerin Yapılabilmesi
-Gate'lerden geçildiğinde elde kart sayısına bağlı olarak toplama, çıkartma ve çarpma işlemleri yapılmaktadır.
+### Gate'lerden GeÃ§me Durumunda Matematiksel Ä°ÅŸlemlerin YapÄ±labilmesi
+Gate'lerden geÃ§ildiÄŸinde elde kart sayÄ±sÄ±na baÄŸlÄ± olarak toplama, Ã§Ä±kartma ve Ã§arpma iÅŸlemleri yapÄ±lmaktadÄ±r.
 
 ![Matematiksel Islemler](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/MatematikHesaplamalar.gif?raw=true)
 
-### Engellere Çarpma Durumunda Kartların Eksiltilebilmesi
-Oyundaki engellere çarpıldığında belirli bir miktarda kart azaltılır ve ekran sallanır.
+### Engellere Ã‡arpma Durumunda KartlarÄ±n Eksiltilebilmesi
+Oyundaki engellere Ã§arpÄ±ldÄ±ÄŸÄ±nda belirli bir miktarda kart azaltÄ±lÄ±r ve ekran sallanÄ±r.
 
 ![Engeller](https://github.com/selinmorali/shuffle-master-prototype/tree/main/Shuffle%20Master%20Prototype/Media/Engel.gif?raw=true)
 
