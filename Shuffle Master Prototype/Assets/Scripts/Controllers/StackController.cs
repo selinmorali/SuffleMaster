@@ -22,10 +22,10 @@ public class StackController : MonoBehaviour
 
     private void Update()
     {
-        //Oyun baslamadan once elime kart alýyorum
+        //Oyun baslamadan once elime kart aliyorum
         if (!GameManager.Instance.isStarted)
         {
-            if (handSO.side == HandSO.Side.Right)
+            if (handSO.side == HandSO.Side.Left)
             {
                 GetCardAndPlace(10);
                 GameManager.Instance.isStarted = true;
@@ -147,6 +147,7 @@ public class StackController : MonoBehaviour
             }
             other.gameObject.SetActive(false);
         }
+        //Engele carpma
         else if (other.CompareTag("Rotator"))
         {
             if(currentStack.Count > 0)
@@ -156,12 +157,14 @@ public class StackController : MonoBehaviour
                 
             }
         }
+        //Finish kýsmýna ulasinca
         else if (other.CompareTag("Finish"))
         {
             PlayerMove.Instance.speed = 50f;
         }
     }
 
+    //Finish alanýndan cikinca
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Finish"))
