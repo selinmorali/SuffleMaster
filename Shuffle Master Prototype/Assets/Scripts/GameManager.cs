@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //Iki eldeki kart sayilarinin toplamini kontrol eder
         totalCardCount = LeftHand.GetComponent<StackController>().currentStack.Count + RightHand.GetComponent<StackController>().currentStack.Count;
 
         if(isStarted && totalCardCount == 0)
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator CloseGame()
     {
+        //Game Over panelini acar, 2 sn sonra oyunu durdurur
         GameOverPanel.SetActive(true);
         PlayerMove.Instance.speed = 0f;
         yield return new WaitForSeconds(2);

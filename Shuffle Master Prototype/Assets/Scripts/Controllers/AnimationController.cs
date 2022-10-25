@@ -25,11 +25,11 @@ public class AnimationController : MonoBehaviour
     //Elden ele kartin tasinma animasyonu
     public void MoveCards(string side)
     {
-
         CardList.Enqueue(ObjectPooler.Instance.GetCard());
         CardList.Peek().SetActive(true);
         CardList.Peek().transform.parent = ActiveCardPool.transform;
 
+        //Eger kart tasima islemi saga dogruysa animasyon icin pozisyonlari alir ve animasyonu baslatir
         if (side == "ToRight")
         {
             leftHand.GetComponent<StackController>().RemoveCardFromDeck(1);
@@ -45,7 +45,8 @@ public class AnimationController : MonoBehaviour
                 HideCard();
             });
         }
-        else if(side == "ToLeft")
+        //Eger kart tasima islemi sola dogruysa animasyon icin pozisyonlari alir ve animasyonu baslatir
+        else if (side == "ToLeft")
         {
             rightHand.GetComponent<StackController>().RemoveCardFromDeck(1);
 
@@ -59,9 +60,7 @@ public class AnimationController : MonoBehaviour
             {
                 HideCard();
             });
-
         }
-
     }
 
     //Animasyon tamamlandiginda animasyon kartini gizleme islemi
