@@ -33,13 +33,6 @@ public class StackController : MonoBehaviour
         }
     }
 
-    private GameObject GetCardFromPool()
-    {
-        GameObject card = ObjectPooler.Instance.GetCard();
-
-        return card;
-    }
-
     public void PlaceCardToDeck(GameObject card)
     {
         card.SetActive(true);
@@ -52,7 +45,7 @@ public class StackController : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject temporaryCard = GetCardFromPool();
+            GameObject temporaryCard = ObjectPooler.Instance.GetCard();
             PlaceCardToDeck(temporaryCard);
         }
     }
@@ -70,7 +63,7 @@ public class StackController : MonoBehaviour
         }
     }
 
-    private Vector3 GetPositionForNewCard()
+    public Vector3 GetPositionForNewCard()
     {
         if (currentStack.Count > 0)
         {
@@ -89,6 +82,23 @@ public class StackController : MonoBehaviour
         }
     }
 
+    public Vector3 GetLocalPositionForANewCard()
+    {
+        if(currentStack.Count > 0)
+        {
+            _topDeckCard = currentStack.Peek();
+            _topDeckCardPosition = _topDeckCard.transform.localPosition;
+            _placeToCardHeightPosition = _topDeckCardPosition.y + _cardHeight;
+            placeToCardPosition = new Vector3(_topDeckCard.transform.localPosition.x, _placeToCardHeightPosition, _topDeckCard.transform.localPosition.z);
+
+            return placeToCardPosition;
+        }
+        else
+        {
+            placeToCardPosition = gameObject.transform.GetChild(3).transform.localPosition;
+            return placeToCardPosition;
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Gate") && currentStack.Count > 0)
