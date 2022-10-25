@@ -9,6 +9,7 @@ public class TouchController : MonoBehaviour
     private float _moveDistance;
     private float _oldDeltaPositionX;
     private float _speedCoef;
+    private Vector3 _animStartPos, _animEndPos;
     [SerializeField] private GameObject leftHand, rightHand;
 
     private void Start()
@@ -89,6 +90,10 @@ public class TouchController : MonoBehaviour
         if (leftHand.GetComponent<StackController>().currentStack.Count > 0)
         {
             leftHand.GetComponent<StackController>().RemoveCardFromDeck(1);
+            _animStartPos = leftHand.GetComponent<StackController>().GetLocalPositionForANewCard();
+            _animEndPos = rightHand.GetComponent<StackController>().GetLocalPositionForANewCard();
+            //StartCoroutine(AnimationController.Instance.MoveCards(_animStartPos, _animEndPos));
+            AnimationController.Instance.MoveCards(_animStartPos, _animEndPos, "Left");
             rightHand.GetComponent<StackController>().GetCardAndPlace(1);
         }
     }
@@ -98,6 +103,10 @@ public class TouchController : MonoBehaviour
         if (rightHand.GetComponent<StackController>().currentStack.Count > 0)
         {
             rightHand.GetComponent<StackController>().RemoveCardFromDeck(1);
+            _animStartPos = rightHand.GetComponent<StackController>().GetLocalPositionForANewCard();
+            _animEndPos = leftHand.GetComponent<StackController>().GetLocalPositionForANewCard();
+            //StartCoroutine(AnimationController.Instance.MoveCards(_animStartPos, _animEndPos));
+            AnimationController.Instance.MoveCards(_animStartPos, _animEndPos, "Right");
             leftHand.GetComponent<StackController>().GetCardAndPlace(1);
         }
     }
