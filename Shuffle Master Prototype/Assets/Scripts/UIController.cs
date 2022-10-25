@@ -15,10 +15,9 @@ public class UIController : MonoBehaviour
     }
     void Update()
     {
-
-
         if (leftHand.GetComponent<StackController>().currentStack != null)
         {
+            //Ellerdeki kart sayilarinin ekranda gorunmesini saglar
             leftHandCount.text = leftHand.GetComponent<StackController>().currentStack.Count.ToString();
             rightHandCount.text = rightHand.GetComponent<StackController>().currentStack.Count.ToString();
         }

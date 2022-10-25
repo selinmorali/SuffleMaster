@@ -6,13 +6,19 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed = 150f;
     private Rigidbody _rb;
+    public static PlayerMove Instance;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         _rb = gameObject.GetComponent<Rigidbody>();
         StartCoroutine(nameof(ForwardMove));
     }
 
+    //Surekli one dogru player'in hareketini saglayan kisim
     IEnumerator ForwardMove()
     {
         yield return new WaitForSeconds(2.5f);

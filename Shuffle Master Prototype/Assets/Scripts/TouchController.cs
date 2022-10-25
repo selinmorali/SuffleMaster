@@ -9,7 +9,7 @@ public class TouchController : MonoBehaviour
     private float _moveDistance;
     private float _oldDeltaPositionX;
     private float _speedCoef;
-    private Vector3 _animStartPos, _animEndPos;
+
     [SerializeField] private GameObject leftHand, rightHand;
 
     private void Start()
@@ -19,6 +19,7 @@ public class TouchController : MonoBehaviour
 
     IEnumerator isTouched()
     {
+        //Dokunma islemleri
         while (true)
         {
             if (Input.touchCount > 0)
@@ -87,27 +88,19 @@ public class TouchController : MonoBehaviour
 
     private void SwapToRight()
     {
+        //Soldan saga kaydirma yaparken elimde kart varsa
         if (leftHand.GetComponent<StackController>().currentStack.Count > 0)
         {
-            leftHand.GetComponent<StackController>().RemoveCardFromDeck(1);
-            _animStartPos = leftHand.GetComponent<StackController>().GetLocalPositionForANewCard();
-            _animEndPos = rightHand.GetComponent<StackController>().GetLocalPositionForANewCard();
-            //StartCoroutine(AnimationController.Instance.MoveCards(_animStartPos, _animEndPos));
-            AnimationController.Instance.MoveCards(_animStartPos, _animEndPos, "Left");
-            rightHand.GetComponent<StackController>().GetCardAndPlace(1);
+            AnimationController.Instance.MoveCards("ToRight");
         }
     }
 
     private void SwapToLeft()
     {
+        //Sagdan sola kaydirma yaparken elimde kart varsa
         if (rightHand.GetComponent<StackController>().currentStack.Count > 0)
         {
-            rightHand.GetComponent<StackController>().RemoveCardFromDeck(1);
-            _animStartPos = rightHand.GetComponent<StackController>().GetLocalPositionForANewCard();
-            _animEndPos = leftHand.GetComponent<StackController>().GetLocalPositionForANewCard();
-            //StartCoroutine(AnimationController.Instance.MoveCards(_animStartPos, _animEndPos));
-            AnimationController.Instance.MoveCards(_animStartPos, _animEndPos, "Right");
-            leftHand.GetComponent<StackController>().GetCardAndPlace(1);
+            AnimationController.Instance.MoveCards("ToLeft");
         }
     }
 
@@ -126,26 +119,26 @@ public class TouchController : MonoBehaviour
 
     private float CalculateSpeedCoef(float distance)
     {
-        if(distance > 0)
+        if (distance > 0)
         {
-            if(distance <= 150)
+            if (distance <= 150)
             {
                 _speedCoef = 0.04f;
             }
-            else if(distance > 150 && distance <= 300)
+            else if (distance > 150 && distance <= 300)
             {
                 _speedCoef = 0.03f;
             }
-            else if(distance > 300 && distance <= 450)
+            else if (distance > 300 && distance <= 450)
             {
                 _speedCoef = 0.02f;
             }
-            else if(distance > 450 && distance <= 600)
+            else if (distance > 450 && distance <= 600)
             {
                 _speedCoef = 0.01f;
             }
         }
-        else if(distance < 0)
+        else if (distance < 0)
         {
             if (distance >= -150)
             {
@@ -166,5 +159,4 @@ public class TouchController : MonoBehaviour
         }
         return _speedCoef;
     }
-
 }

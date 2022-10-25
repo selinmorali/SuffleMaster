@@ -22,6 +22,7 @@ public class ObjectPooler : MonoBehaviour
         CreateObjectPool();
     }
 
+    //Object pool olusturma islemi
     void CreateObjectPool()
     {
         objectQueue = new Queue<GameObject>();
@@ -35,6 +36,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
+    //Pooldan kullanilacak karti cekme islemi
     public GameObject GetCard ()
     {
         GameObject cardToGet = objectQueue.Dequeue();

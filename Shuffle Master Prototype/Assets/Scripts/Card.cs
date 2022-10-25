@@ -7,11 +7,11 @@ public class Card : MonoBehaviour
     public static Card Instance;
     public float CardHeight;
 
-
     void Awake()
     {
         Instance = this;
 
+        //Kartin yukseklik degeri
         CardHeight = gameObject.GetComponent<MeshRenderer>().bounds.size.y;
     }
 }

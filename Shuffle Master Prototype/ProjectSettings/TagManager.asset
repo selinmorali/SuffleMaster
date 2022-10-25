@@ -7,6 +7,7 @@ TagManager:
   - LeftHand
   - RightHand
   - Gate
+  - Rotator
   layers:
   - Default
   - TransparentFX

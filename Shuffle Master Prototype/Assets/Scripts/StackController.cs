@@ -10,7 +10,6 @@ public class StackController : MonoBehaviour
     private Vector3 _topDeckCardPosition;
     private Vector3 placeToCardPosition;
     public Stack<GameObject> currentStack;
-    private bool isStarted = false;
     [SerializeField] private HandSO handSO;
     [SerializeField] private GameObject _queue;
     [SerializeField] private GameObject mainPool;
@@ -23,16 +22,18 @@ public class StackController : MonoBehaviour
 
     private void Update()
     {
-        if (!isStarted)
+        //Oyun baslamadan once elime kart alýyorum
+        if (!GameManager.Instance.isStarted)
         {
-            if (handSO.side == HandSO.Side.Left)
+            if (handSO.side == HandSO.Side.Right)
             {
                 GetCardAndPlace(10);
-                isStarted = true;
+                GameManager.Instance.isStarted = true;
             }
         }
     }
 
+    //Karti desteye ekleme islemi
     public void PlaceCardToDeck(GameObject card)
     {
         card.SetActive(true);
@@ -41,6 +42,7 @@ public class StackController : MonoBehaviour
         currentStack.Push(card);
     }
 
+    //Object pooldan kart cekip yerlestirme islemi
     public void GetCardAndPlace(int count)
     {
         for (int i = 0; i < count; i++)
@@ -50,6 +52,7 @@ public class StackController : MonoBehaviour
         }
     }
 
+    //Eldeki desteden kart cikarma islemi
     public void RemoveCardFromDeck(int count)
     {
         for (int i = 0; i < count; i++)
@@ -63,6 +66,7 @@ public class StackController : MonoBehaviour
         }
     }
 
+    //Eklenecek yeni kart icin pozisyon alma islemi
     public Vector3 GetPositionForNewCard()
     {
         if (currentStack.Count > 0)
@@ -76,47 +80,93 @@ public class StackController : MonoBehaviour
         }
         else
         {
-            placeToCardPosition = gameObject.transform.GetChild(3).transform.position;
+            if(handSO.side == HandSO.Side.Left)
+            {
+                placeToCardPosition = gameObject.transform.parent.transform.GetChild(2).transform.GetChild(0).transform.position;
+            }
+            else if(handSO.side == HandSO.Side.Right)
+            {
+                placeToCardPosition = gameObject.transform.parent.transform.GetChild(2).transform.GetChild(1).transform.position;
+            }
 
             return placeToCardPosition;
         }
     }
 
-    public Vector3 GetLocalPositionForANewCard()
+    //Animasyon baslangic ve bitis pozisyonlari icin local pozisyon alma islemi
+    public Vector3 GetLocalPositionForAnimation()
     {
         if(currentStack.Count > 0)
         {
             _topDeckCard = currentStack.Peek();
             _topDeckCardPosition = _topDeckCard.transform.localPosition;
-            _placeToCardHeightPosition = _topDeckCardPosition.y + _cardHeight;
-            placeToCardPosition = new Vector3(_topDeckCard.transform.localPosition.x, _placeToCardHeightPosition, _topDeckCard.transform.localPosition.z);
+            _placeToCardHeightPosition = _topDeckCardPosition.y + 0.016f;
+            placeToCardPosition = new Vector3(_topDeckCard.transform.localPosition.x, _placeToCardHeightPosition, 0);
 
             return placeToCardPosition;
         }
         else
         {
-            placeToCardPosition = gameObject.transform.GetChild(3).transform.localPosition;
+            if (handSO.side == HandSO.Side.Left)
+            {
+                placeToCardPosition = gameObject.transform.parent.transform.GetChild(2).transform.GetChild(0).transform.localPosition;
+                placeToCardPosition = new Vector3(placeToCardPosition.x, placeToCardPosition.y, 0);
+            }
+            else if (handSO.side == HandSO.Side.Right)
+            {
+                placeToCardPosition = gameObject.transform.parent.transform.GetChild(2).transform.GetChild(1).transform.localPosition;
+                placeToCardPosition = new Vector3(placeToCardPosition.x, placeToCardPosition.y, 0);
+            }
+
             return placeToCardPosition;
         }
     }
+
+    //Gate ve Rotator objelerine carpildigi durumda yapýlan islemler
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Gate") && currentStack.Count > 0)
+        if (other.CompareTag("Gate"))
         {
-            if (other.GetComponent<Gate>()._operator == "+")
+            if(currentStack.Count > 0)
             {
-                GetCardAndPlace(other.GetComponent<Gate>().value);
-            }
-            else if (other.GetComponent<Gate>()._operator == "-")
-            {
-                RemoveCardFromDeck(other.GetComponent<Gate> ().value);
-            }
-            else if (other.GetComponent<Gate>()._operator == "*")
-            {
-                int result = currentStack.Count * (other.GetComponent<Gate>().value - 1);
+                //Matematisek hesaplamalar
+                if (other.GetComponent<Gate>()._operator == "+")
+                {
+                    GetCardAndPlace(other.GetComponent<Gate>().value);
+                }
+                else if (other.GetComponent<Gate>()._operator == "-")
+                {
+                    RemoveCardFromDeck(other.GetComponent<Gate>().value);
+                }
+                else if (other.GetComponent<Gate>()._operator == "*")
+                {
+                    int result = currentStack.Count * (other.GetComponent<Gate>().value - 1);
 
-                GetCardAndPlace(result);
+                    GetCardAndPlace(result);
+                }
             }
+            other.gameObject.SetActive(false);
+        }
+        else if (other.CompareTag("Rotator"))
+        {
+            if(currentStack.Count > 0)
+            {
+                CameraController.Instance.Shake(0.5f, 2f);
+                RemoveCardFromDeck(3);
+                
+            }
+        }
+        else if (other.CompareTag("Finish"))
+        {
+            PlayerMove.Instance.speed = 50f;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Finish"))
+        {
+            StartCoroutine(GameManager.Instance.CloseGame());
         }
     }
 }
