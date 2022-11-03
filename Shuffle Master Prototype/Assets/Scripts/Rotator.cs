@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    public float speed = 3f;
+    private float speed = 3f;
 
-    void Update()
+    private void Start()
     {
-        //Objenin kendi ekseninde donusunu saglar
-        transform.Rotate(0f, 0f, speed * Time.deltaTime / 0.01f, Space.Self);
+        StartCoroutine(Rotate());
+    }
+
+    //Objenin kendi ekseninde donusunu saglar
+    IEnumerator Rotate()
+    {
+        while (true)
+        {
+            transform.Rotate(0f, 0f, speed * Time.deltaTime / 0.01f, Space.Self);
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

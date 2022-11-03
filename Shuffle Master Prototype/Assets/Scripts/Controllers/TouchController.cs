@@ -12,14 +12,17 @@ public class TouchController : MonoBehaviour
 
     [SerializeField] private GameObject leftHand, rightHand;
 
+
     private void Start()
     {
         StartCoroutine(isTouched());
     }
 
+
+    //Dokunma islemleri
     IEnumerator isTouched()
     {
-        //Dokunma islemleri
+
         while (true)
         {
             if (Input.touchCount > 0)
@@ -76,16 +79,24 @@ public class TouchController : MonoBehaviour
             }
             else
             {
-                //Parmak kaldirildiginda, ekranda bir dokunma durumu olmadiginda pozisyon degerlerini sifirlar.
-                _startTouchPositionX = 0;
-                _currentTouchPositionX = 0;
-                _previousTouchPositionX = 0;
-                _moveDistance = 0;
+                ResetPosition();
             }
             yield return new WaitForEndOfFrame();
         }
     }
 
+
+    //Parmak kaldirildiginda, ekranda bir dokunma durumu olmadiginda pozisyon degerlerini sifirlar.
+    void ResetPosition()
+    {
+        _startTouchPositionX = 0;
+        _currentTouchPositionX = 0;
+        _previousTouchPositionX = 0;
+        _moveDistance = 0;
+    }
+
+
+    //Soldan saga kaydirma islemi
     private void SwapToRight()
     {
         //Soldan saga kaydirma yaparken elimde kart varsa
@@ -95,6 +106,8 @@ public class TouchController : MonoBehaviour
         }
     }
 
+
+    //Sagdan sola kaydirma islemi
     private void SwapToLeft()
     {
         //Sagdan sola kaydirma yaparken elimde kart varsa
@@ -104,10 +117,10 @@ public class TouchController : MonoBehaviour
         }
     }
 
+
     private void CheckDirectionChange()
     {
-        //Bir onceki pozisyon degisikligi ile mevcut pozisyon degisikligi arasinda yon farkinin oldugunu
-        //anlamak icin (cunku saga gidiyorsa + sola gidiliyorsa - deger aldigini biliyoruz) bu degerleri carpiyoruz.
+        //Bir onceki pozisyon degisikligi ile mevcut pozisyon degisikligi arasinda yon farkinin oldugunu anlamak icin (cunku saga gidiyorsa + sola gidiliyorsa - deger aldigini biliyoruz) bu degerleri carpiyoruz.
         if (_deltaPositionX * _oldDeltaPositionX < 0)
         {
             _startTouchPositionX = _currentTouchPositionX;
@@ -116,6 +129,7 @@ public class TouchController : MonoBehaviour
         //Yon degigisikligini algilamak adina bir onceki frame'deki pozisyon farkliligini hafizada tutar.
         _oldDeltaPositionX = _deltaPositionX;
     }
+
 
     private float CalculateSpeedCoef(float distance)
     {

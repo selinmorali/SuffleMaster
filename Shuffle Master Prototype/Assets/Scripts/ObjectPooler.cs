@@ -11,6 +11,7 @@ public class ObjectPooler : MonoBehaviour
         public GameObject Prefab;
         public int Size;
     }
+
     Queue<GameObject> objectQueue;
 
     public Pool objectPool;
@@ -35,6 +36,7 @@ public class ObjectPooler : MonoBehaviour
             objectQueue.Enqueue(obj);
         }
     }
+
 
     //Pooldan kullanilacak karti cekme islemi
     public GameObject GetCard ()
