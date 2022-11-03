@@ -13,13 +13,19 @@ public class UIController : MonoBehaviour
     {
         Instance = this;
     }
+
+
     void Update()
     {
-        if (leftHand.GetComponent<StackController>().currentStack != null)
-        {
-            //Ellerdeki kart sayilarinin ekranda gorunmesini saglar
-            leftHandCount.text = leftHand.GetComponent<StackController>().currentStack.Count.ToString();
-            rightHandCount.text = rightHand.GetComponent<StackController>().currentStack.Count.ToString();
-        }
+        //Kart sayisini surekli olarak gunceller.
+        SetText();
+    }
+
+
+    //Ellerdeki kart sayilarinin ekranda gorunmesini saglar
+    void SetText()
+    {
+        leftHandCount.text = leftHand.GetComponent<StackController>().currentStack.Count.ToString();
+        rightHandCount.text = rightHand.GetComponent<StackController>().currentStack.Count.ToString();
     }
 }

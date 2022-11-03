@@ -5,13 +5,16 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     public static Card Instance;
-    public float CardHeight;
 
     void Awake()
     {
         Instance = this;
+    }
 
-        //Kartin yukseklik degeri
-        CardHeight = gameObject.GetComponent<MeshRenderer>().bounds.size.y;
+    public float GetCardHeight()
+    {
+        //Kartin yukseklik degerini alma islemi
+        float _cardHeight = gameObject.GetComponent<MeshRenderer>().bounds.size.y;
+        return _cardHeight;
     }
 }

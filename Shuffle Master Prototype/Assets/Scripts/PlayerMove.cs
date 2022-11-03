@@ -12,13 +12,16 @@ public class PlayerMove : MonoBehaviour
     {
         Instance = this;
     }
+
+
     private void Start()
     {
         _rb = gameObject.GetComponent<Rigidbody>();
         StartCoroutine(nameof(ForwardMove));
     }
 
-    //Surekli one dogru player'in hareketini saglayan kisim
+
+    //Surekli one dogru player'in hareketini saglar
     IEnumerator ForwardMove()
     {
         yield return new WaitForSeconds(2.5f);

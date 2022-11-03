@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StackController : MonoBehaviour
 {
-    private float _cardHeight;
     private float _placeToCardHeightPosition;
     private GameObject _topDeckCard;
     private Vector3 _topDeckCardPosition;
@@ -17,21 +16,23 @@ public class StackController : MonoBehaviour
     private void Start()
     {
         currentStack = handSO.CurrentHand;
-        _cardHeight = Card.Instance.CardHeight;
+        Card.Instance.GetCardHeight();
+
+        //Oyun baslayinca sol elime 10 kart aliyorum
+        DrawTenCards();     
     }
 
-    private void Update()
+
+    //Oyun baslayinca sol ele 10 kart koyma islemi
+    public void DrawTenCards()
     {
-        //Oyun baslamadan once elime kart aliyorum
-        if (!GameManager.Instance.isStarted)
+        if (handSO.side == HandSO.Side.Left)
         {
-            if (handSO.side == HandSO.Side.Left)
-            {
-                GetCardAndPlace(10);
-                GameManager.Instance.isStarted = true;
-            }
+            GetCardAndPlace(10);
+            GameManager.Instance.isStarted = true;
         }
     }
+
 
     //Karti desteye ekleme islemi
     public void PlaceCardToDeck(GameObject card)
@@ -42,6 +43,7 @@ public class StackController : MonoBehaviour
         currentStack.Push(card);
     }
 
+
     //Object pooldan kart cekip yerlestirme islemi
     public void GetCardAndPlace(int count)
     {
@@ -51,6 +53,7 @@ public class StackController : MonoBehaviour
             PlaceCardToDeck(temporaryCard);
         }
     }
+
 
     //Eldeki desteden kart cikarma islemi
     public void RemoveCardFromDeck(int count)
@@ -66,6 +69,7 @@ public class StackController : MonoBehaviour
         }
     }
 
+
     //Eklenecek yeni kart icin pozisyon alma islemi
     public Vector3 GetPositionForNewCard()
     {
@@ -73,7 +77,7 @@ public class StackController : MonoBehaviour
         {
             _topDeckCard = currentStack.Peek();
             _topDeckCardPosition = _topDeckCard.transform.position;
-            _placeToCardHeightPosition = _topDeckCardPosition.y + _cardHeight;
+            _placeToCardHeightPosition = _topDeckCardPosition.y + Card.Instance.GetCardHeight();
             placeToCardPosition = new Vector3(_topDeckCard.transform.position.x, _placeToCardHeightPosition, _topDeckCard.transform.position.z);
 
             return placeToCardPosition;
@@ -92,6 +96,7 @@ public class StackController : MonoBehaviour
             return placeToCardPosition;
         }
     }
+
 
     //Animasyon baslangic ve bitis pozisyonlari icin local pozisyon alma islemi
     public Vector3 GetLocalPositionForAnimation()
@@ -122,14 +127,15 @@ public class StackController : MonoBehaviour
         }
     }
 
-    //Gate ve Rotator objelerine carpildigi durumda yapýlan islemler
+
+    //Gate Rotator ve Finish objelerine carpildigi durumda yapilan islemler
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Gate"))
         {
             if(currentStack.Count > 0)
             {
-                //Matematisek hesaplamalar
+                //Matematiksel hesaplamalar
                 if (other.GetComponent<Gate>()._operator == "+")
                 {
                     GetCardAndPlace(other.GetComponent<Gate>().value);
@@ -154,22 +160,22 @@ public class StackController : MonoBehaviour
             {
                 CameraController.Instance.Shake(0.5f, 2f);
                 RemoveCardFromDeck(3);
-                
             }
         }
-        //Finish kýsmýna ulasinca
+        //Finish kismina ulasinca
         else if (other.CompareTag("Finish"))
         {
             PlayerMove.Instance.speed = 50f;
         }
     }
 
-    //Finish alanýndan cikinca
+
+    //Finish alanindan cikinca
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Finish"))
         {
-            StartCoroutine(GameManager.Instance.CloseGame());
+            StartCoroutine(GameManager.Instance.EndGame());
         }
     }
 }

@@ -16,28 +16,68 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+
     private void Start()
+    {
+        //Oyun basladiginda Game Over paneli kapali olmali
+        CloseGameOverPanel();
+    }
+
+
+    //Ellerdeki kart sayilari sürekli olarak guncellenip kontrol edildigi kisim
+    void Update()
+    {
+        //Ýki eldeki kartlari
+        CheckTotalCardCount();
+
+        if(isStarted && totalCardCount == 0)
+        {
+            StartCoroutine(EndGame());
+        }
+    }
+
+
+    //Iki eldeki kart sayilarinin toplamini kontrol eder
+    private void CheckTotalCardCount()
+    {
+        totalCardCount = LeftHand.GetComponent<StackController>().currentStack.Count + RightHand.GetComponent<StackController>().currentStack.Count;
+    }
+
+
+    //Oyunu bitirme islemi
+    public IEnumerator EndGame()
+    {
+        OpenGameOverPanel();
+        StopPlayerSpeed();
+        yield return new WaitForSeconds(2);
+        StopEditorApplication();
+    }
+
+
+    //Game Over panelini acar
+    private void OpenGameOverPanel()
+    {
+        GameOverPanel.SetActive(true);
+    }
+
+
+    //GameOver panelini kapar
+    private void CloseGameOverPanel()
     {
         GameOverPanel.SetActive(false);
     }
 
-    void Update()
-    {
-        //Iki eldeki kart sayilarinin toplamini kontrol eder
-        totalCardCount = LeftHand.GetComponent<StackController>().currentStack.Count + RightHand.GetComponent<StackController>().currentStack.Count;
 
-        if(isStarted && totalCardCount == 0)
-        {
-            StartCoroutine(nameof(CloseGame));
-        }
+    //Player'in hizini durdurur
+    private void StopPlayerSpeed()
+    {
+        PlayerMove.Instance.speed = 0f;
     }
 
-    public IEnumerator CloseGame()
+
+    //Editor'un calismasini durdurur
+    private void StopEditorApplication()
     {
-        //Game Over panelini acar, 2 sn sonra oyunu durdurur
-        GameOverPanel.SetActive(true);
-        PlayerMove.Instance.speed = 0f;
-        yield return new WaitForSeconds(2);
-        UnityEditor.EditorApplication.isPlaying = false;  
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }
