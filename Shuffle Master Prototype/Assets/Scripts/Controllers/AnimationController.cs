@@ -3,71 +3,70 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class AnimationController : MonoBehaviour
+public class AnimationController : MonoSingleton<AnimationController>
 {
     public PathType PathSystem = PathType.CatmullRom;
     public GameObject ActiveCardPool, PoolGO;
     public Vector3[] LeftPathValues = new Vector3[5];
     public Vector3[] RightPathValues = new Vector3[5];
     public Tween t;
-    public Queue<GameObject> CardList;
-    public GameObject leftHand;
-    public GameObject rightHand;
-
-    public static AnimationController Instance;
+    public Queue<GameObject> ToRightQueue;
+    public Queue<GameObject> ToLeftQueue;
 
     private void Awake()
     {
-        CardList = new Queue<GameObject>();
-        Instance = this;
+        ToLeftQueue = new Queue<GameObject>();
+        ToRightQueue = new Queue<GameObject>();
     }
 
     //Elden ele kartin tasinma animasyonu
-    public void MoveCards(string side)
+    public void MoveCardToRight()
     {
-        CardList.Enqueue(ObjectPooler.Instance.GetCard());
-        CardList.Peek().SetActive(true);
-        CardList.Peek().transform.parent = ActiveCardPool.transform;
+        ToRightQueue.Enqueue(ObjectPooler.Instance.GetCard());
+        ToRightQueue.Peek().SetActive(true);
+        ToRightQueue.Peek().transform.parent = ActiveCardPool.transform;
 
         //Eger kart tasima islemi saga dogruysa animasyon icin pozisyonlari alir ve animasyonu baslatir
-        if (side == "ToRight")
-        {
-            leftHand.GetComponent<StackController>().RemoveCardFromDeck(1);
+            StackController.Instance.RemoveCardFromDeck(LeftHand.Instance,1);
 
-            LeftPathValues[0] = leftHand.GetComponent<StackController>().GetLocalPositionForAnimation();
-            LeftPathValues[4] = rightHand.GetComponent<StackController>().GetLocalPositionForAnimation();
-            CardList.Peek().transform.localPosition = LeftPathValues[0];
-            rightHand.GetComponent<StackController>().GetCardAndPlace(1);
-            t = CardList.Peek().transform.transform.DOLocalPath(LeftPathValues, 0.20f, PathSystem);
+            LeftPathValues[0] = StackController.Instance.GetLocalPositionForNewCard(LeftHand.Instance);
+            LeftPathValues[4] = StackController.Instance.GetLocalPositionForNewCard(RightHand.Instance);
+            ToRightQueue.Peek().transform.localPosition = LeftPathValues[0];
+            StackController.Instance.GetCardAndPlace(RightHand.Instance,1);
+            t = ToRightQueue.Peek().transform.transform.DOLocalPath(LeftPathValues, 0.20f, PathSystem);
 
             t.SetEase(Ease.Linear).OnComplete(() =>
             {
-                HideCard();
+                //Animasyon tamamlandiginda animasyon kartini gizleme islemi
+                ToRightQueue.Peek().transform.parent = PoolGO.transform;
+                ToRightQueue.Peek().SetActive(false);
+                ToRightQueue.Dequeue();
             });
-        }
-        //Eger kart tasima islemi sola dogruysa animasyon icin pozisyonlari alir ve animasyonu baslatir
-        else if (side == "ToLeft")
-        {
-            rightHand.GetComponent<StackController>().RemoveCardFromDeck(1);
-
-            RightPathValues[0] = rightHand.GetComponent<StackController>().GetLocalPositionForAnimation();
-            RightPathValues[4] = leftHand.GetComponent<StackController>().GetLocalPositionForAnimation();
-            CardList.Peek().transform.localPosition = RightPathValues[0];
-            leftHand.GetComponent<StackController>().GetCardAndPlace(1);
-            t = CardList.Peek().transform.transform.DOLocalPath(RightPathValues, 0.20f, PathSystem);
-
-            t.SetEase(Ease.Linear).OnComplete(() =>
-            {
-                HideCard();
-            });
-        }
     }
 
-    //Animasyon tamamlandiginda animasyon kartini gizleme islemi
-    private void HideCard()
+    public void MoveCardToLeft()
     {
-        CardList.Peek().transform.parent = PoolGO.transform;
-        CardList.Peek().SetActive(false);
-        CardList.Dequeue();
+        ToLeftQueue.Enqueue(ObjectPooler.Instance.GetCard());
+        ToLeftQueue.Peek().SetActive(true);
+        ToLeftQueue.Peek().transform.parent = ActiveCardPool.transform;
+
+        //Eger kart tasima islemi sola dogruysa animasyon icin pozisyonlari alir ve animasyonu baslatir
+
+        StackController.Instance.RemoveCardFromDeck(RightHand.Instance, 1);
+
+        RightPathValues[0] = StackController.Instance.GetLocalPositionForNewCard(RightHand.Instance);
+        RightPathValues[4] = StackController.Instance.GetLocalPositionForNewCard(LeftHand.Instance);
+        ToLeftQueue.Peek().transform.localPosition = RightPathValues[0];
+        StackController.Instance.GetCardAndPlace(LeftHand.Instance, 1);
+        t = ToLeftQueue.Peek().transform.transform.DOLocalPath(RightPathValues, 0.20f, PathSystem);
+
+        t.SetEase(Ease.Linear).OnComplete(() =>
+        {
+            //Animasyon tamamlandiginda animasyon kartini gizleme islemi
+            ToLeftQueue.Peek().transform.parent = PoolGO.transform;
+            ToLeftQueue.Peek().SetActive(false);
+            ToLeftQueue.Dequeue();
+        });
     }
+
 }

@@ -10,8 +10,6 @@ public class TouchController : MonoBehaviour
     private float _oldDeltaPositionX;
     private float _speedCoef;
 
-    [SerializeField] private GameObject leftHand, rightHand;
-
 
     private void Start()
     {
@@ -48,13 +46,13 @@ public class TouchController : MonoBehaviour
                     _previousTouchPositionX = _currentTouchPositionX;
                      _moveDistance = _currentTouchPositionX - _startTouchPositionX;
 
-                    if (_moveDistance > 0 && leftHand.GetComponent<StackController>().currentStack.Count > 0)
+                    if (_moveDistance > 0 && LeftHand.Instance.currentStack.Count > 0)
                     {
                         //Kart aktarim hizi icin cooldown
                         yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
                         SwapToRight();
                     }
-                    else if (_moveDistance < 0 && rightHand.GetComponent<StackController>().currentStack.Count > 0)
+                    else if (_moveDistance < 0 && RightHand.Instance.currentStack.Count > 0)
                     {
                         //Kart aktarim hizi icin cooldown
                         yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
@@ -65,12 +63,12 @@ public class TouchController : MonoBehaviour
                 {
                     //10 degeri deadzone olarak belirlenmistir. Kaydirma islemi basladiktan sonra parmak basili kalirsa
                     //kart aktarim islemine devam etmek icin
-                    if (_moveDistance > 10 && leftHand.GetComponent<StackController>().currentStack.Count > 0)
+                    if (_moveDistance > 10 && LeftHand.Instance.currentStack.Count > 0)
                     {
                         yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
                         SwapToRight();
                     }
-                    else if (_moveDistance < -10 && rightHand.GetComponent<StackController>().currentStack.Count > 0)
+                    else if (_moveDistance < -10 && RightHand.Instance.currentStack.Count > 0)
                     {
                         yield return new WaitForSeconds(CalculateSpeedCoef(_moveDistance));
                         SwapToLeft();
@@ -100,20 +98,19 @@ public class TouchController : MonoBehaviour
     private void SwapToRight()
     {
         //Soldan saga kaydirma yaparken elimde kart varsa
-        if (leftHand.GetComponent<StackController>().currentStack.Count > 0)
+        if (LeftHand.Instance.currentStack.Count > 0)
         {
-            AnimationController.Instance.MoveCards("ToRight");
+            AnimationController.Instance.MoveCardToRight();
         }
     }
-
 
     //Sagdan sola kaydirma islemi
     private void SwapToLeft()
     {
         //Sagdan sola kaydirma yaparken elimde kart varsa
-        if (rightHand.GetComponent<StackController>().currentStack.Count > 0)
+        if (RightHand.Instance.currentStack.Count > 0)
         {
-            AnimationController.Instance.MoveCards("ToLeft");
+            AnimationController.Instance.MoveCardToLeft();
         }
     }
 
@@ -123,7 +120,7 @@ public class TouchController : MonoBehaviour
         //Bir onceki pozisyon degisikligi ile mevcut pozisyon degisikligi arasinda yon farkinin oldugunu anlamak icin (cunku saga gidiyorsa + sola gidiliyorsa - deger aldigini biliyoruz) bu degerleri carpiyoruz.
         if (_deltaPositionX * _oldDeltaPositionX < 0)
         {
-            _startTouchPositionX = _currentTouchPositionX;
+            _startTouchPositionX = _previousTouchPositionX;
         }
 
         //Yon degigisikligini algilamak adina bir onceki frame'deki pozisyon farkliligini hafizada tutar.

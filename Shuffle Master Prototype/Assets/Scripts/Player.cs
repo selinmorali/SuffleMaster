@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    public float speed = 150f;
+    private float _speed = 150f;
     private Rigidbody _rb;
-    public static PlayerMove Instance;
+    public static Player Instance;
 
     private void Awake()
     {
@@ -27,10 +27,15 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         while (true)
         {
-            Vector3 _forwardMove = transform.forward * speed * Time.deltaTime;
+            Vector3 _forwardMove = transform.forward * _speed * Time.deltaTime;
             _rb.MovePosition(_rb.position + _forwardMove);
 
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    public void SetPlayerSpeed(float speed)
+    {
+        _speed = speed;
     }
 }

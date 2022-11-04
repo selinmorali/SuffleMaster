@@ -1,19 +1,11 @@
 using UnityEngine;
 using TMPro;
 
-public class UIController : MonoBehaviour
+public class UIController : MonoSingleton<UIController>
 {
     public TextMeshProUGUI leftHandCount;
     public TextMeshProUGUI rightHandCount;
-    public static UIController Instance;
-    public GameObject leftHand;
-    public GameObject rightHand;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    public GameObject GameOverPanel;
 
     void Update()
     {
@@ -21,11 +13,23 @@ public class UIController : MonoBehaviour
         SetText();
     }
 
-
     //Ellerdeki kart sayilarinin ekranda gorunmesini saglar
-    void SetText()
+    private void SetText()
     {
-        leftHandCount.text = leftHand.GetComponent<StackController>().currentStack.Count.ToString();
-        rightHandCount.text = rightHand.GetComponent<StackController>().currentStack.Count.ToString();
+        leftHandCount.text = LeftHand.Instance.currentStack.Count.ToString();
+        rightHandCount.text = RightHand.Instance.currentStack.Count.ToString();
     }
+
+    //Game Over panelini acar
+    public void OpenGameOverPanel()
+    {
+        GameOverPanel.SetActive(true);
+    }
+
+    //GameOver panelini kapar
+    public void CloseGameOverPanel()
+    {
+        GameOverPanel.SetActive(false);
+    }
+
 }
