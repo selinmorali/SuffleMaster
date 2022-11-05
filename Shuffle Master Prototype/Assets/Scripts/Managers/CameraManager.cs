@@ -1,35 +1,26 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraManager : MonoSingleton<CameraManager>
 {
-    public Transform player;
+    public Transform Player;
     private Vector3 _offset;
-    public static CameraController Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     void Start()
     {
-        _offset = transform.position - player.position;
+        _offset = transform.position - Player.position;
     }
-
 
     void Update()
     {
         SetCameraPosition();
     }
 
-
     //Player ile kamera arasindaki mesafeyi sabit tutmaya yarar   
     void SetCameraPosition()
     {
-        transform.position = player.position + _offset;
+        transform.position = Player.position + _offset;
     }
-
 
     //Kameranin sallanmasini saglar
     private void OnShake(float duration, float strength)

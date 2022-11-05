@@ -1,25 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoSingleton<Player>
 {
     private float _speed = 150f;
     private Rigidbody _rb;
-    public static Player Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
 
     private void Start()
     {
         _rb = gameObject.GetComponent<Rigidbody>();
         StartCoroutine(nameof(ForwardMove));
     }
-
 
     //Surekli one dogru player'in hareketini saglar
     IEnumerator ForwardMove()
@@ -34,6 +25,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Oyuncunun hizini degistirebilmemizi saglar
     public void SetPlayerSpeed(float speed)
     {
         _speed = speed;

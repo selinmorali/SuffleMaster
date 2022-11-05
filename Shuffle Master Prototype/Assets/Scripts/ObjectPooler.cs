@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,12 +36,10 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-
     //Pooldan kullanilacak karti cekme islemi
     public GameObject GetCard ()
     {
         GameObject cardToGet = objectQueue.Dequeue();
-
         objectQueue.Enqueue(cardToGet);
 
         return cardToGet;

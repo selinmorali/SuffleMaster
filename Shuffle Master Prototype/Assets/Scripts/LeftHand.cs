@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +9,9 @@ public class LeftHand : Hand
     {
         Instance = this;
         currentStack = new Stack<GameObject>();
+        //Elde hic kart yokken bu ele gelecek ilk kartin yerlesecegi pozisyon.
+        firstCardPosition = new Vector3(0.733f, 0.110f, -0.113f);
     }
-    private void Start()
-    {
-        firstCardPosition = new Vector3(1.731f, 0.103f, -0.18f);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Gate"))
@@ -23,19 +19,20 @@ public class LeftHand : Hand
             if (currentStack.Count > 0)
             {
                 //Matematiksel hesaplamalar
-                if (other.GetComponent<Gate>()._operator == "+")
+                switch (other.GetComponent<Gate>().SO.Operator)
                 {
-                    StackController.Instance.GetCardAndPlace(Instance, other.GetComponent<Gate>().value);
-                }
-                else if (other.GetComponent<Gate>()._operator == "-")
-                {
-                    StackController.Instance.RemoveCardFromDeck(Instance, other.GetComponent<Gate>().value);
-                }
-                else if (other.GetComponent<Gate>()._operator == "*")
-                {
-                    int result = currentStack.Count * (other.GetComponent<Gate>().value - 1);
-
-                    StackController.Instance.GetCardAndPlace(Instance, result);
+                    case GateSO.OperatorType.Sum:
+                        StackManager.Instance.GetCardAndPlace(Instance, other.GetComponent<Gate>().SO.Value);
+                        break;
+                    case GateSO.OperatorType.Sub:
+                        StackManager.Instance.RemoveCardFromDeck(Instance, other.GetComponent<Gate>().SO.Value);
+                        break;
+                    case GateSO.OperatorType.Multiply:
+                        int result = currentStack.Count * (other.GetComponent<Gate>().SO.Value - 1);
+                        StackManager.Instance.GetCardAndPlace(Instance, result);
+                        break;
+                    default:
+                        break;
                 }
             }
             other.gameObject.SetActive(false);
@@ -45,8 +42,8 @@ public class LeftHand : Hand
         {
             if (currentStack.Count > 0)
             {
-                CameraController.Instance.Shake(0.5f, 2f);
-                StackController.Instance.RemoveCardFromDeck(Instance, 3);
+                CameraManager.Instance.Shake(0.5f, 2f);
+                StackManager.Instance.RemoveCardFromDeck(Instance, 3);
             }
         }
         //Finish kismina ulasinca
@@ -58,6 +55,7 @@ public class LeftHand : Hand
 
     private void OnTriggerExit(Collider other)
     {
+        //Finish cizgisinden cikildiginda
         if (other.CompareTag("Finish"))
         {
             StartCoroutine(GameManager.Instance.EndGame());

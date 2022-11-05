@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    private int totalCardCount;
-    public bool isStarted = false;
+    private int _totalCardCount;
+    public bool IsStarted = false;
 
     private void Start()
     {
-        isStarted = true;
+        IsStarted = true;
     }
 
     //Ellerdeki kart sayilari surekli olarak guncellenip kontrol edildigi kisim
@@ -17,7 +17,7 @@ public class GameManager : MonoSingleton<GameManager>
         //Iki eldeki kartlarin toplami
         CheckTotalCardCount();
 
-        if(isStarted && totalCardCount == 0)
+        if(IsStarted && _totalCardCount == 0)
         {
             StartCoroutine(EndGame());
         }
@@ -26,13 +26,13 @@ public class GameManager : MonoSingleton<GameManager>
     //Iki eldeki kart sayilarinin toplamini kontrol eder
     private void CheckTotalCardCount()
     {
-        totalCardCount = LeftHand.Instance.currentStack.Count + RightHand.Instance.currentStack.Count;
+        _totalCardCount = LeftHand.Instance.currentStack.Count + RightHand.Instance.currentStack.Count;
     }
 
     //Oyunu bitirme islemi
     public IEnumerator EndGame()
     {
-        UIController.Instance.OpenGameOverPanel();
+        UIManager.Instance.OpenGameOverPanel();
         Player.Instance.SetPlayerSpeed(0);
         yield return new WaitForSeconds(2);
         StopEditorApplication();

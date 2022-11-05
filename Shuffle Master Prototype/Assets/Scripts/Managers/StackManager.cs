@@ -1,13 +1,10 @@
 using UnityEngine;
 
-public class StackController : MonoSingleton<StackController>
+public class StackManager : MonoSingleton<StackManager>
 {
-    private GameObject _topDeckCard;
+    private float _cardHeight = 0.016f;
     private float _placeToCardPositionY;
-    private Vector3 _topDeckCardPosition;
     private Vector3 _placeToCardPosition;
-    [SerializeField] private GameObject _queue;
-    [SerializeField] private GameObject _mainPool;
 
     private void Start()
     {
@@ -35,7 +32,6 @@ public class StackController : MonoSingleton<StackController>
     public void PlaceCardToDeck(Hand hand, GameObject card)
     {
         card.SetActive(true);
-        card.transform.parent = _queue.transform;
         card.transform.localPosition = GetLocalPositionForNewCard(hand);
         hand.currentStack.Push(card);
     }
@@ -45,11 +41,8 @@ public class StackController : MonoSingleton<StackController>
     {
         if (hand.currentStack.Count > 0)
         {
-            _topDeckCard = hand.currentStack.Peek();
-            _topDeckCardPosition = _topDeckCard.transform.localPosition;
-            _placeToCardPositionY = _topDeckCardPosition.y + 0.016f;
-            _placeToCardPosition = new Vector3(_topDeckCard.transform.localPosition.x, _placeToCardPositionY, _topDeckCard.transform.localPosition.z);
-
+            _placeToCardPositionY = hand.firstCardPosition.y + (_cardHeight * hand.currentStack.Count);
+            _placeToCardPosition = new Vector3(hand.firstCardPosition.x, _placeToCardPositionY, hand.firstCardPosition.z);
             return _placeToCardPosition;
         }
         else
@@ -67,7 +60,6 @@ public class StackController : MonoSingleton<StackController>
             if (hand.currentStack.Count > 0)
             {
                 GameObject cardToRemove = hand.currentStack.Pop();
-                cardToRemove.transform.parent = _mainPool.transform;
                 cardToRemove.SetActive(false);
             }
         }

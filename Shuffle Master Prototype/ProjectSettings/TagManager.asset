@@ -4,8 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - LeftHand
-  - RightHand
   - Gate
   - Rotator
   layers:
