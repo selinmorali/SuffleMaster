@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +19,7 @@ public class ObjectPooler : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        objectPool.Size = 150;
         CreateObjectPool();
     }
 
@@ -37,12 +37,10 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-
     //Pooldan kullanilacak karti cekme islemi
     public GameObject GetCard ()
     {
         GameObject cardToGet = objectQueue.Dequeue();
-
         objectQueue.Enqueue(cardToGet);
 
         return cardToGet;
