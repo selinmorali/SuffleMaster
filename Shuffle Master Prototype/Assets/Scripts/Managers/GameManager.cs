@@ -32,6 +32,7 @@ public class GameManager : MonoSingleton<GameManager>
     //Oyunu bitirme islemi
     public IEnumerator EndGame()
     {
+        UIManager.Instance.HideTutorialAnim();
         UIManager.Instance.OpenGameOverPanel();
         Player.Instance.SetPlayerSpeed(0);
         yield return new WaitForSeconds(2);

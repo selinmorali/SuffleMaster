@@ -19,6 +19,7 @@ public class ObjectPooler : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        objectPool.Size = 150;
         CreateObjectPool();
     }
 

@@ -6,6 +6,7 @@ public class UIManager : MonoSingleton<UIManager>
     public TextMeshProUGUI LeftHandCount;
     public TextMeshProUGUI RightHandCount;
     public GameObject GameOverPanel;
+    public GameObject HoldAndDrag;
 
     void Update()
     {
@@ -30,5 +31,11 @@ public class UIManager : MonoSingleton<UIManager>
     public void CloseGameOverPanel()
     {
         GameOverPanel.SetActive(false);
+    }
+
+    //Egitici animasyonu kapatir
+    public void HideTutorialAnim()
+    {
+        HoldAndDrag.SetActive(false);
     }
 }

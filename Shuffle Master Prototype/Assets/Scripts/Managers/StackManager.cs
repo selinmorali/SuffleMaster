@@ -15,25 +15,29 @@ public class StackManager : MonoSingleton<StackManager>
     //Oyun baslayinca sol ele 10 kart koyma islemi
     public void DrawTenCards()
     {
-        GetCardAndPlace(LeftHand.Instance, count: 10);
+        GetCardAndPlace(LeftHand.Instance, count: 10, false);
     }
 
     //Object pooldan kart cekip yerlestirme islemi
-    public void GetCardAndPlace(Hand hand, int count)
+    public void GetCardAndPlace(Hand hand, int count, bool isAnimate = true)
     {
         for (int i = 0; i < count; i++)
         {
             GameObject temporaryCard = ObjectPooler.Instance.GetCard();
-            PlaceCardToDeck(hand, temporaryCard);
+            PlaceCardToDeck(hand, temporaryCard, isAnimate);
         }
     }
 
     //Karti desteye ekleme islemi
-    public void PlaceCardToDeck(Hand hand, GameObject card)
+    public void PlaceCardToDeck(Hand hand, GameObject card, bool isAnimate = true)
     {
         card.SetActive(true);
         card.transform.localPosition = GetLocalPositionForNewCard(hand);
         hand.currentStack.Push(card);
+        if (isAnimate)
+        {
+            AnimationManager.Instance.CardScaleAnimation(card);
+        }
     }
 
     //Kartin eklenecegi local pozisyon alma islemi

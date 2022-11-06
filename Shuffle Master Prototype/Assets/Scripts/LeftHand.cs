@@ -8,10 +8,10 @@ public class LeftHand : Hand
     private void Awake()
     {
         Instance = this;
-        currentStack = new Stack<GameObject>();
-        //Elde hic kart yokken bu ele gelecek ilk kartin yerlesecegi pozisyon.
-        firstCardPosition = new Vector3(0.733f, 0.110f, -0.113f);
+        currentStack = new Stack<GameObject>();      
+        firstCardPosition = new Vector3(0.733f, 0.110f, -0.113f); //Elde hic kart yokken bu ele gelecek ilk kartin yerlesecegi pozisyon.
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Gate"))

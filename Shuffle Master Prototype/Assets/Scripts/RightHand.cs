@@ -9,8 +9,7 @@ public class RightHand : Hand
     {
         Instance = this;
         currentStack = new Stack<GameObject>();
-        //Elde hic kart yokken bu ele gelecek ilk kartin yerlesecegi pozisyon.
-        firstCardPosition = new Vector3(-0.97f, 0.110f, 0.097f);
+        firstCardPosition = new Vector3(-0.97f, 0.110f, 0.097f); //Elde hic kart yokken bu ele gelecek ilk kartin yerlesecegi pozisyon.
     }
 
     private void OnTriggerEnter(Collider other)

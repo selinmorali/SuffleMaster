@@ -27,7 +27,10 @@ public class SwipeManager : MonoSingleton<SwipeManager>
 
             endHand.currentStack.Push(_cardToMove);
 
-            _tween = _cardToMove.transform.DOLocalJump(_endPosition, 2f, 1, 0.3f);
+            _tween = _cardToMove.transform.DOLocalJump(_endPosition, 2f, 1, 0.3f).OnComplete(() =>
+            {
+                AnimationManager.Instance.CardScaleAnimation(_cardToMove);
+            });
         }
     }
 
@@ -42,32 +45,32 @@ public class SwipeManager : MonoSingleton<SwipeManager>
         float _speedCoef = 0;
         if (distance > 0)
         {
-            if (distance <= 150)
+            if (distance <= 175)
+            {
+                _speedCoef = 0.03f;
+            }
+            else if (distance > 175 && distance <= 350)
+            {
+                _speedCoef = 0.02f;
+            }
+            else if (distance > 350)
             {
                 _speedCoef = 0.015f;
-            }
-            else if (distance > 150 && distance <= 300)
-            {
-                _speedCoef = 0.01f;
-            }
-            else if (distance > 300 && distance <= 450)
-            {
-                _speedCoef = 0.0075f;
             }
         }
         else if (distance < 0)
         {
-            if (distance >= -150)
+            if (distance >= -175)
+            {
+                _speedCoef = 0.03f;
+            }
+            else if (distance < -175 && distance >= -350)
+            {
+                _speedCoef = 0.02f;
+            }
+            else if (distance < -350)
             {
                 _speedCoef = 0.015f;
-            }
-            else if (distance < -150 && distance >= -300)
-            {
-                _speedCoef = 0.01f;
-            }
-            else if (distance < -300 && distance >= -450)
-            {
-                _speedCoef = 0.0075f;
             }
         }
         return _speedCoef;
