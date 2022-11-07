@@ -36,3 +36,9 @@ Oyundaki engellere çarpıldığında belirli bir miktarda kart azaltılır ve e
 
 ![Engeller](https://github.com/selinmorali/shuffle-master-prototype/blob/main/Shuffle%20Master%20Prototype/Media/Engel.gif)
 
+
+## Kullanılan Assetler
+https://assetstore.unity.com/packages/3d/characters/stylized-simple-hands-221297
+https://assetstore.unity.com/packages/3d/props/tools/free-playing-cards-pack-154780
+https://assetstore.unity.com/packages/2d/textures-materials/sky/farland-skies-cloudy-crown-60004
+https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676

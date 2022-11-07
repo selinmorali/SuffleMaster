@@ -1162,7 +1162,7 @@ MonoBehaviour:
   LeftHandCount: {fileID: 2020248740}
   RightHandCount: {fileID: 577989307}
   GameOverPanel: {fileID: 1910783798}
-  _holdAndDrag: {fileID: 1674506540}
+  HoldAndDrag: {fileID: 1674506540}
 --- !u!114 &620903089
 MonoBehaviour:
   m_ObjectHideFlags: 0
